@@ -1,0 +1,37 @@
+/****** Object:  Table [dbo].[ChildTable]    Script Date: 29/05/2020 16:27:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ChildTable](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[MasterTableId] [int] NOT NULL,
+	[Created] [datetime] NOT NULL,
+	[Value] [nvarchar](36) NOT NULL,
+ CONSTRAINT [PK_ChildTable] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[MasterTable]    Script Date: 29/05/2020 16:27:15 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[MasterTable](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [nvarchar](10) NOT NULL,
+ CONSTRAINT [PK_MasterTable] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[ChildTable] ADD  CONSTRAINT [DF_ChildTable_Created]  DEFAULT (getutcdate()) FOR [Created]
+GO
+ALTER TABLE [dbo].[ChildTable]  WITH CHECK ADD  CONSTRAINT [FK_ChildTable_MasterTable] FOREIGN KEY([MasterTableId])
+REFERENCES [dbo].[MasterTable] ([Id])
+GO
+ALTER TABLE [dbo].[ChildTable] CHECK CONSTRAINT [FK_ChildTable_MasterTable]
+GO
